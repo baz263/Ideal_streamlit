@@ -1,0 +1,12 @@
+streamlit
+boto3
+pandas==2.0.3
+plotly
+matplotlib
+seaborn
+prophet==1.1.4
+joblib
+cmdstanpy==1.1.0
+scikit-learn==1.2.2
+
+
