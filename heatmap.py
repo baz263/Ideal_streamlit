@@ -1,6 +1,7 @@
 
 import plotly.graph_objects as go
 
+# Function to create a heatmap
 def heatmap2(df, homeid=None):
     data = df[['electric-combined']]
 

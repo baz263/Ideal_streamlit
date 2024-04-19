@@ -2,6 +2,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Function to plot the hourly electricity consumption
+
+#function to divide the energy usage into relevant bins
 def bin_builder(df):
     count_under_10000 = df[(df['electric-combined'] < 10)].gas.count()
     count_between_10000_20000 = df[(df['electric-combined'] >= 10) & (df['electric-combined'] < 20)].gas.count()
@@ -16,6 +19,8 @@ def bin_builder(df):
     count_over_80000 = df[(df['electric-combined'] >= 80000)].gas.count()
     bins = [count_under_10000, count_between_10000_20000, count_between_20000_30000, count_between_30000_40000, count_between_40000_50000,count_between_50000_60000,count_between_60000_70000,count_between_70000_80000, count_over_80000]
     return bins
+
+#function to count how many go in to each bin
 def power_hour_count(df, homeid=None):
 
     bins = bin_builder(df)

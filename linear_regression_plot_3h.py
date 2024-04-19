@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 
-
+# Function to plot the forecasted values using linear regression
 # Create a line plot for the predicted data
 def linear_regression_plot_3h(predictiondf, df):
     trace1 = go.Scatter(

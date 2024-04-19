@@ -22,6 +22,8 @@ from sklearn.ensemble import RandomForestClassifier
 st.set_page_config(layout="wide")
 
 @st.cache_data()
+
+#function to get the data from the s3 bucket according to the homeid
 def df_getter(homeid):
     session = boto3.Session(
         aws_access_key_id = st.secrets['AWS']['AWS_ACCESS_KEY_ID'],
@@ -44,6 +46,7 @@ def df_getter(homeid):
 
     return df
 
+#function to get the data from the s3 bucket for ALL houses
 @st.cache_data()
 def df_getter_all():
     session = boto3.Session(
@@ -66,6 +69,8 @@ def df_getter_all():
     df.set_index('time', inplace=True)
 
     return df
+
+#function to get the data from the s3 bucket for ALL houses - 3hours
 
 @st.cache_data()
 def df_getter_3Hall():
@@ -90,6 +95,7 @@ def df_getter_3Hall():
 
     return df
 
+#function to take the pckled fbProphet model from the s3 bucket and load it as well as to create the forecast
 @st.cache_resource()
 def model_maker(forecast_time):
     forecast_time = int(forecast_time)
@@ -109,7 +115,7 @@ def model_maker(forecast_time):
     #st.write(future)
     return forecast
 
-
+#function to take the pickled linear regresssion 1H model and to load it
 @st.cache_resource()
 def model_maker_linear_1h():
     session = boto3.Session(
@@ -122,6 +128,7 @@ def model_maker_linear_1h():
     m = load(bytestream)
     return m
 
+#function to take the pickled linear regresssion 1H model and to load it for the community
 @st.cache_resource()
 def model_maker_linear_3h():
     session = boto3.Session(
@@ -134,6 +141,7 @@ def model_maker_linear_3h():
     m = load(bytestream)
     return m
 
+#function to take the pickled random forest 3H model and to load it
 @st.cache_resource()
 def model_maker_random_forest_3h():
     session = boto3.Session(
@@ -145,6 +153,7 @@ def model_maker_random_forest_3h():
     m = load(bytestream)
     return m
 
+#function to take the pickled random forest 1H model and to load it
 @st.cache_resource()
 def model_maker_random_forest_1h():
     session = boto3.Session(
@@ -156,6 +165,7 @@ def model_maker_random_forest_1h():
     m = load(bytestream)
     return m
 
+#function to take the pickled fbProphet model 3H from the s3 bucket and load it as well as to create the forecast for the community
 @st.cache_resource()
 def model_maker_3H_community(forecast_time):
     forecast_time = int(forecast_time)
@@ -178,17 +188,21 @@ def model_maker_3H_community(forecast_time):
 
 
 
-
+#the dataframes by 1h or 3h for teh community as a whole
 df_1h_all = df_getter_all()
 df_3h_all = df_getter_3Hall()
 
+#feeding the last row of the dataframes to the models to get the predictions
 df_topredict = df_1h_all.tail(1)[['temperature_2m (°C)', 'relative_humidity_2m (%)',
        'weather_code (wmo code)', 'wind_speed_10m (km/h)',
        'wind_direction_10m (°)', 'day', 'hour', 'electric-combined',
        'electric-combined-yesterday', 'electric-combined-last-week']]
+#creating an instance of the linear model 1H
 model_linear_1h= model_maker_linear_1h()
+#adapting a column to datetime
 df_topredict.time = pd.to_datetime(df_topredict.index)
 next_hour = df_topredict.index[-1] + pd.Timedelta(hours=1)
+#getting the predictions
 predictions = model_linear_1h.predict(df_topredict)
 
 #3H linear model info

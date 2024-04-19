@@ -1,5 +1,7 @@
 import plotly.graph_objects as go
 
+# Function to plot the forecasted values using Facebook Prophet
+
 def fbprophet_plot(df):
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=df.index, y=df['yhat'], mode='lines', name='yhat'))

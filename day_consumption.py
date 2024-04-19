@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
+#outputs a seaborn boxplot of the energy consumtpion
 def day_consumption_outliersremoved(df):
     order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday', 'Sunday']
     fig, ax = plt.subplots(figsize = (9,6))

@@ -4,7 +4,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 
-
+# Function to plot the hourly electricity consumption
 def hourly_consumption2(df, homeid=None):
     # Calculate the average hourly consumption
     average_consumption = df['electric-combined'].mean()
